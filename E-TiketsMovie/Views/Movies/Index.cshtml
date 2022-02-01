@@ -1,0 +1,82 @@
+﻿@model IEnumerable<ViewModels.DisplayMoiveDTO>
+
+@{
+    ViewData["Title"] = "List of Movies";
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 col-xs-6 border-primary mb-3 div-container" data-id="@item.Id">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header text-white bg-info">
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.Name
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole(UserRoles.Admin))
+                                    {
+                                        <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                        <span></span>
+                                        <button class="text-white float-right" onclick="Remove(@item.Id, this)"><i class="bi bi-trash"></i></button>
+                                       
+                                    }
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="/Images/@item.ImageURL" width="100%" alt="@item.Name">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-text">@item.Description</p>
+                            <p class="card-text"><b>Cinema: </b>@item.CinmaName</p>
+                            <p class="card-text"><b>Category: </b>@item.MovieCatogery</p>
+                            <p class="card-text"><b>Start Date: </b>@item.StartDate</p>
+                            <p class="card-text"><b>End Date: </b>@item.EndDate</p>
+                            <p class="card-text ">
+                                <b>Status: </b>
+                                @if (DateTime.Now >= Convert.ToDateTime(item.StartDate) && DateTime.Now <= Convert.ToDateTime(item.EndDate))
+                                {
+                                    <span class="badge bg-success text-white">AVAILABLE</span>
+                                }
+                                else if (DateTime.Now > Convert.ToDateTime(item.EndDate))
+                                {
+                                    <span class="badge bg-danger text-white">EXPIRED</span>
+                                    <input type="hidden" asp-for="@item.Id" id="movieId" />
+                                           }
+                                           else
+                                           {
+                                    <span class="badge bg-primary text-white">UPCOMING</span>
+                                    }
+                                </p>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer ">
+                            <p class="card-text">
+                                <a class="btn btn-outline-primary float-right" asp-action="Detalies" asp-route-id="@item.Id">
+                                    <i class="bi bi-eye-fill"></i> Show Details
+                                </a>
+                                <a class="btn btn-success text-white @((DateTime.Now > Convert.ToDateTime(item.EndDate)) ? "disabled" : "")"
+                                   asp-controller="Order"
+                                   asp-action="AddItemToShoppingCart"
+                                   asp-route-id="@item.Id">
+                                    <i class="bi bi-cart-plus">Add</i> Add to Cart (Price @item.Price.ToString("c"))
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@await Html.PartialAsync("_CreateAction", "Movies");
+@section Scripts{ 
+<partial name="_Scripts" />
+}

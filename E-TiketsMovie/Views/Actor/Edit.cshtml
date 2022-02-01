@@ -1,0 +1,129 @@
+﻿@model ViewModels.ActorViewModel
+
+@{
+    ViewData["Title"] = "Update  actor";
+}
+
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Add a New Actor</h1>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <dvi asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class=" form-group text-center" id="poster-container">
+                        <img src="~/Images/@Model.Profile"class="border-info rounded-circle" style="max-width: 150px" />
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" id="poster" class="custom-file-input" asp-for="ActorImage" accept=".png,.jpg" />
+                        <label class="custom-file-label mt-0" asp-for="ActorImage"></label>
+                        <span asp-validation-for="ActorImage" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FullName" class="control-label"></label>
+                        <input asp-for="FullName" id="txtName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Bio" class="control-label"></label>
+                        <input asp-for="Bio" id="txtBio" class="form-control" />
+                        <span asp-validation-for="Bio" class="text-danger"></span>
+                        <input type="hidden" id="hdID" asp-for="@Model.ID" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Update" id="btnSave" class="btn btn-outline-success float-right" />
+                        <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                    </div>
+                    <div>
+                        <label id="lblmessage"></label>
+                    </div>
+                </dvi>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+
+
+    //function ValidateForm() {
+    //    if (img == 0) {
+    //        $("#lblmessage").append("You Must Upload Image......");
+    //    }
+    //    if (txtName.text == "") {
+    //        $("#lblmessage").append("You Must Enter Name......");
+
+    //    }
+    //    if (txtBio.text == "") {
+    //        $("#lblmessage").append("You Must Enter Bio......");
+
+    //    }
+    //    else {
+    //        return null;
+    //    }
+    //}
+    $("#btnSave").on('click', function ()
+    {
+
+        var img = $(".custom-file-input").get(0).files[0];
+        var txtName = $("#txtName").val();
+        var txtBio = $("#txtBio").val();
+        var frmData = new FormData();
+        frmData.append("ActorImage", img);
+        frmData.append("FullName", txtName);
+        frmData.append("Bio", txtBio);
+        frmData.append("ID", $("#hdID").val());
+            $.ajax({
+                method: 'post',
+                url: "@Url.Action("Update", "Actor")",
+                data: frmData,
+                processData: false,
+                contentType: false,
+                success: function (res)
+                {
+                    if (res.isSuccess)
+                    {
+                        swal({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Your work has been Update',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        window.location.href = "@Url.Action("index")"
+                    }
+                    else {
+
+                        swal({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Your work has Not been Updated',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                },
+                error: function (res)
+                {
+                    console.log(res);
+                    swal({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Your work has been Not Updated..There is an error occured',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+
+    });
+
+
+    </script>
+
+    <partial name="_DisplayImage" />
+}

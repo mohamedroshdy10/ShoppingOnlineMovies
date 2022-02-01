@@ -1,0 +1,159 @@
+﻿      <script>
+        function Delete(id,ele) {
+            if (id != null) {
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result) {
+                        $.post('@Url.Action("Delete")', {id },
+
+                            function (res) {
+                                if (res.isSuccess) {
+                                    swal(
+                                        'Deleted!',
+                                        res.message,
+                                        'success'
+                                    )
+                                    $(ele).closest("tr").slideUp().remove();
+
+                                }
+                                else {
+                                    swal(
+                                        'Not Deleted!',
+                                        res.message,
+                                        'Error'
+                                    )
+                                }
+
+                            });
+
+                    }
+                })
+            }
+            else {
+                swal(
+                    'Iteam Not Found!',
+                    'Error'
+                )
+
+            }
+
+          }
+           $("#btnSave").on('click', function ()
+    {
+
+        var img = $(".custom-file-input").get(0).files[0];
+        var txtName = $("#txtName").val();
+        var txtBio = $("#txtBio").val();
+        var frmData = new FormData();
+        frmData.append("CinamaImage", img);
+        frmData.append("Name", txtName);
+        frmData.append("Description", txtBio);
+        frmData.append("ID", $("#hdID").val());
+            $.ajax({
+                method: 'post',
+                url: "@Url.Action("Update")",
+                data: frmData,
+                processData: false,
+                contentType: false,
+                success: function (res)
+                {
+                    if (res.isSuccess)
+                    {
+                        swal({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Your work has been Update',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        window.location.href = "@Url.Action("index")"
+                    }
+                    else {
+
+                        swal({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Your work has Not been Updated',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                },
+                error: function (res)
+                {
+                    console.log(res);
+                    swal({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Your work has been Not Updated..There is an error occured',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+
+           });
+            $("#btnSave").on('click', function ()
+    {
+
+        var img = $(".custom-file-input").get(0).files[0];
+        var txtName = $("#txtName").val();
+        var txtBio = $("#txtBio").val();
+        var frmData = new FormData();
+        frmData.append("CinamaImage", img);
+        frmData.append("Name", txtName);
+        frmData.append("Description", txtBio);
+            $.ajax({
+                method: 'post',
+                url: "@Url.Action("Add")",
+                data: frmData,
+                processData: false,
+                contentType: false,
+                success: function (res)
+                {
+                    console.log(res);
+                    if (res.isSuccess)
+                    {
+                        swal({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: res.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        window.location.href = "@Url.Action("index")"
+                    }
+                    else {
+
+                        swal({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: res.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                },
+                error: function (res)
+                {
+                    console.log(res+"Ero");
+                    swal({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: res.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+
+    });
+</script>
+

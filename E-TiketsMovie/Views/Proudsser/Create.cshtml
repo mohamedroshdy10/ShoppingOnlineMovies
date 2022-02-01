@@ -1,0 +1,53 @@
+﻿@model ViewModels.ProudusserViewModel
+
+@{
+    ViewData["Title"] = "Add a new actor";
+}
+
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Add a New Actor</h1>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <dvi asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="d-none form-group text-center" id="poster-container">
+                        <img src="" class="border-info rounded-circle" style="max-width: 150px" />
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" id="poster" class="custom-file-input" asp-for="ProudserImge" accept=".png,.jpg" />
+                        <label class="custom-file-label mt-0" asp-for="ProudserImge"></label>
+                        <span asp-validation-for="ProudserImge" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FullName" class="control-label"></label>
+                        <input asp-for="FullName" id="txtName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Bio" class="control-label"></label>
+                        <input asp-for="Bio" id="txtBio" class="form-control" />
+                        <span asp-validation-for="Bio" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" id="btnSave" class="btn btn-outline-success float-right" />
+                        <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                    </div>
+                    <div>
+                        <label id="lblmessage"></label>
+                    </div>
+                </dvi>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <partial name="_Scripts.cshtml" />
+
+
+    <partial name="_DisplayImage" />
+}

@@ -1,0 +1,113 @@
+﻿<script>
+      $("#btnSave").on('click', function ()
+    {
+
+        var img = $(".custom-file-input").get(0).files[0];
+        var txtName = $("#txtName").val();
+        var txtBio = $("#txtBio").val();
+        var frmData = new FormData();
+        frmData.append("ProudserImge", img);
+        frmData.append("FullName", txtName);
+        frmData.append("Bio", txtBio);
+        console.log(frmData);
+            $.ajax({
+                method: 'post',
+                url: "@Url.Action("Add")",
+                data: frmData,
+                processData: false,
+                contentType: false,
+                success: function (res)
+                {
+                    console.log(res);
+                    if (res.isSuccess)
+                    {
+                        swal({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: res.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        window.location.href = "@Url.Action("index")"
+                    }
+                    else {
+
+                        swal({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: res.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                },
+                error: function (res)
+                {
+                    console.log(res+"Ero");
+                    swal({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: res.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+
+      });
+  $("#btnUpdate").on('click', function ()
+    {
+
+        var img = $(".custom-file-input").get(0).files[0];
+        var txtName = $("#txtName").val();
+        var txtBio = $("#txtBio").val();
+        var frmData = new FormData();
+        frmData.append("ProudserImge", img);
+        frmData.append("FullName", txtName);
+        frmData.append("Bio", txtBio);
+        frmData.append("ID", $("#hdID").val());
+            $.ajax({
+                method: 'post',
+                url: "@Url.Action("Update")",
+                data: frmData,
+                processData: false,
+                contentType: false,
+                success: function (res)
+                {
+                    if (res.isSuccess)
+                    {
+                        swal({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Your work has been Update',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        window.location.href = "@Url.Action("index")"
+                    }
+                    else {
+
+                        swal({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: res.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                },
+                error: function (res)
+                {
+                    console.log(res);
+                    swal({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: res.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+
+    });
+</script>

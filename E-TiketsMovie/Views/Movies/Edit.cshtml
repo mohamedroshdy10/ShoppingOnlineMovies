@@ -1,0 +1,113 @@
+﻿@model ViewModels.MoviewViewModel
+@using E_TiketsMovie.Models.Enums
+@using E_TiketsMovie.Reposteries
+@inject MoiveRepostery _repomovie
+@{
+    ViewData["Title"] = "Create a new movie";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4>Create a new movie</h4>
+        </p>
+
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <div asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" id="txtName" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StartDate" class="control-label"></label>
+                                <input asp-for="StartDate" id="txtStartData" type="date" class="form-control" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EndDate" class="control-label"></label>
+                                <input asp-for="EndDate" id="txtEndDate" type="date" class="form-control" />
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Price" class="control-label"></label>
+                                <input asp-for="Price" id="txtPrice" type="number" class="form-control" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                                <input type="hidden" asp-for="Id"  id="hdID"/>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CinemaId" class="control-label"></label>
+                                <select asp-for="CinemaId" id="ddlCinema" class="form-control">
+                                    @foreach (var item in _repomovie.SelectCinema())
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="CinemaId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="MovieCatogery" class="control-label"></label>
+                                <select asp-for="MovieCatogery" id="ddlCatogery" class="form-control" asp-items="Html.GetEnumSelectList<MovieCatogery>()"></select>
+                                <span asp-validation-for="MovieCatogery" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ProducerId" class="control-label"></label>
+                                <select asp-for="ProducerId" id="ddlProdusser" class="form-control">
+                                    @foreach (var item in _repomovie.selectProdusser())
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="ProducerId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ActorIds" class="control-label"></label>
+                                <select asp-for="ActorIds" id="ddlActors" class="form-control select2" multiple>
+                                    @foreach (var item in _repomovie.SelectActor())
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="ActorIds" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea asp-for="Description" id="txtDescription" class="form-control"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center" id="poster-container">
+                        <img src="~/Images/@Model.ImageURL" class="border-info rounded-circle" style="max-width: 150px" />
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" id="poster" class="custom-file-input" asp-for="Poster" accept=".png,.jpg" />
+                        <label class="custom-file-label mt-0" asp-for="Poster"></label>
+                        <span asp-validation-for="Poster" class="text-danger"></span>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <button type="button" id="btnEdit" class="btn btn-outline-success float-right">Update</button>
+                        <a class="btn btn-outline-secondary" asp-action="Index">Show all</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_DisplayImage" />
+    <partial name="_Scripts" />
+}
